@@ -1,10 +1,13 @@
 #from engines.engine import SnakeEngine
 
 class DepthFirstSearchEngine():
-    def __init__(self, grid_size, head):
+    def __init__(self, grid_size):
         self._grid_size = grid_size
         self._next_moves = []
         self._grid = []
+
+    def __call__(self, grid, head):
+        self.get_next_move(grid, head)
 
     def get_engine_name(self):
         return 'Depth First Search'

@@ -11,6 +11,7 @@ class SnakeEngine(DepthFirstSearchEngine):
         self.start = 1
         self.direction = 1 #1 = up, 3 = down
         self.possible_moves = [1, 2, 3, 4]
+        self.dfs_engine = DepthFirstSearchEngine(grid_size)
 
     def get_engine_name(self):
         return 'Default Engine'
@@ -24,12 +25,13 @@ class SnakeEngine(DepthFirstSearchEngine):
     def get_next_move(self, grid, head, tail, direction, apple):
         self.set_snake_length(grid)
         self.calc_possible_moves(grid, head)
+        self.dfs_engine(grid, head)
 
         if self.length < self._grid_size*2-1:
             return self.start_method(grid, head, apple)
         
         elif self.length < 50:
-            return DepthFirstSearchEngine.get_next_move(DepthFirstSearchEngine(), grid, head)
+            return self.dfs_engine(grid, head)
 
     def start_method(self, grid, head, apple):
         #if at the top, go right or left until the head is above the apple
@@ -62,7 +64,9 @@ class SnakeEngine(DepthFirstSearchEngine):
             move = 1
     
         if move not in self.possible_moves:
-            return DepthFirstSearchEngine.get_next_move(grid, head)
+            result = self.dfs_engine(grid, head)
+            print(result)
+            return result
 
         return move
 
